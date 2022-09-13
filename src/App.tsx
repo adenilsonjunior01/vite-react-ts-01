@@ -6,17 +6,9 @@ export default class MainComponent extends React.Component<{}> {
   public dados = data.mario;
 
   public totalPrice(valores: Array<any>): number {
-    let result = 0;
-    valores.map((value) => (result += Number(value.preco.split(' ')[1])));
-    return result;
-  }
-
-  public precoAlto(totalPrice: any): any {
-    if (totalPrice > 10000) {
-      return 'Você está gastando muito!';
-    } else {
-      return '';
-    }
+    return valores
+      .map((value) => (Number(value.preco.replace('R$ ', ''))))
+      .reduce((a, b) => a + b);
   }
 
   public render() {
@@ -43,7 +35,7 @@ export default class MainComponent extends React.Component<{}> {
           })}
         </strong>
       </p>
-      <p>{this.precoAlto(this.totalPrice(this.dados.compras))}</p>
+      {this.totalPrice(this.dados.compras) > 10000 && 'Você está gastando muito!'}
     </section>
     );
   }
